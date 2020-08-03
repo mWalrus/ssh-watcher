@@ -1,0 +1,8 @@
+# Script generated blocklist
+blocklist.list
+
+# Log files
+*.log
+
+# config files
+*.conf
