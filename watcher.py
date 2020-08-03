@@ -37,7 +37,7 @@ def run_check_all():
 # tails auth log file for new login attempts
 def run_tail ():
   print(f"{Base.OKBLUE}\t\t############ Running in Tail mode ############{Base.NC}")
-  f = subprocess.Popen(['tail', '-f', ssh_log_file],\
+  f = subprocess.Popen(['tail', '-n0',  '-f', ssh_log_file],\
       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   p = select.poll()
   p.register(f.stdout)
