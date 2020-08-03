@@ -86,7 +86,7 @@ DevMode=False
 # Will default to /var/log/auth.log if left empty
 LogPath=
 ```
-5. fill in sudo password in wacther.conf
+5. fill in sudo password in watcher.conf
 
 ## Running the script
 Nodejs has a package called [pm2](https://pm2.keymetrics.io/ "Advanced, production process manager") which can be
