@@ -2,7 +2,7 @@
 
 A small script to monitor incoming SSH connections.
 
-![SSH Watcher](https://i.imgur.com/mZIbF6K.png)
+![SSH Watcher](https://i.imgur.com/FVhw7py.png)
 
 # Requirements
 
