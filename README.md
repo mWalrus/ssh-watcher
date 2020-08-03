@@ -1,6 +1,16 @@
 # SSH Watcher
 
-A small script to monitor incoming ssh connections.
+A small script to monitor incoming SSH connections.
+
+# Requirements
+
+To be able to run this script you will need to install [ufw](https://wiki.archlinux.org/index.php/Uncomplicated_Firewall "Uncomplicated Firewall").
+
+
+**IMPORTANT**: If you are installing ufw for the first time and
+you are doing it over an SSH connection you need add rules to allow
+SSH connections. Otherwise your connection will be terminated and
+you wont be able to log in anymore.
 
 # Features
 
@@ -26,23 +36,23 @@ then kill the process that the connection.
 
 ### All mode
 
-`./watcher.py -a`
+`./watcher.py -a`  
 All mode goes through the entire ssh auth.log file and checks connection attempts.
 
 ### Tail mode
 
-`./watcher.py -t` or just `./watcher.py`
+`./watcher.py -t` or just `./watcher.py`  
 Tail mode tails the log file and handles all the new incoming connection attemps made after the script is started.
 
 ## Setup
 
-1. Clone project:
+1. Clone project:  
 `git clone https://github.com/mWalrus/ssh-watcher.git`
-2. Enter project directory:
+2. Enter project directory:  
 `cd ssh-watcher`
-3. Create config file:
+3. Create config file:  
 `touch watcher.conf`
-4. Copy and paste this in watcher.conf:
+4. Copy and paste this in watcher.conf:  
 ```
 ########################################################
 #                       SSH WATCHER                    #
@@ -79,7 +89,7 @@ LogPath=
 ## Running the script
 Nodejs has a package called [pm2](https://pm2.keymetrics.io/ "Advanced, production process manager") which can be
 used to run this script as a background process. While in the project folder you can start a process running the
-script with a single command:
+script with a single command:  
 `pm2 start watcher.py -l watcher.log --interpreter python3`
 The `-l watcher.log` specifies that pm2 should log the process' output to the file watcher.log (you don't have to create the file before hand)
 The `--interpreter python3` is used to make sure that the correct interpreter is used.
