@@ -2,12 +2,14 @@
 
 A small script to monitor incoming SSH connections.
 
+![SSH Watcher](https://imgur.com/a/CsCrBw1.png "SSH Watcher")
+
 # Requirements
 
 To be able to run this script you will need to install [ufw](https://wiki.archlinux.org/index.php/Uncomplicated_Firewall "Uncomplicated Firewall").
 
 
-**IMPORTANT**: If you are installing ufw for the first time and
+**IMPORTANT:** If you are installing ufw for the first time and
 you are doing it over an SSH connection you need add rules to allow
 SSH connections. Otherwise your connection will be terminated and
 you wont be able to log in anymore.
