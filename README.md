@@ -88,8 +88,9 @@ LogPath=
 
 ## Running the script
 Nodejs has a package called [pm2](https://pm2.keymetrics.io/ "Advanced, production process manager") which can be
-used to run this script as a background process. While in the project folder you can start a process running the
+used to run this script as a background process.  
+While in the project folder you can start a process running the
 script with a single command:  
-`pm2 start watcher.py -l watcher.log --interpreter python3`
-The `-l watcher.log` specifies that pm2 should log the process' output to the file watcher.log (you don't have to create the file before hand)
+`pm2 start watcher.py -l watcher.log --interpreter python3`  
+The `-l watcher.log` specifies that pm2 should log the process' output to the file watcher.log (you don't have to create the file before hand)  
 The `--interpreter python3` is used to make sure that the correct interpreter is used.
