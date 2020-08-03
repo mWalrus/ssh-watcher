@@ -46,7 +46,7 @@ Tail mode tails the log file and handles all the new incoming connection attemps
 ```
 ########################################################
 #                       SSH WATCHER                    #
-#                    Configuration File                #
+#                    Configuration File                 #
 ########################################################
 [BASE]
 # Sudo password to insert rules into the firewall
