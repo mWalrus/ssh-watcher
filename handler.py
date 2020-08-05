@@ -53,8 +53,7 @@ def block_ip_address(ip):
     print(f"{Base.OKGREEN }Added {Base.BOLD + ip + Base.NC + Base.OKGREEN} to blocklist {Base.NC}")
 
 def reload_ufw():
-  if config['BASE'].getboolean('DevMode'):
-    return
+  if config['BASE'].getboolean('DevMode'): return
   if not updated_firewall:
     print(f'\n\n{Base.WARNING}No firewall changes made\nSkipping firewall reload{Base.NC}')
     return
@@ -74,38 +73,39 @@ def get_connection_details(line, match):
 def check_blocklist(ip, tail_mode):
   ip_exists = False
   for r in blocked_addresses:
-    if r == ip:
-      ip_exists = True
+    if r == ip: ip_exists = True
   
   if ip_exists:
     print(f"{Base.OKBLUE}IP {Base.BOLD + ip + Base.NC + Base.OKBLUE} is already blocked!\nSkipping{Base.NC}")
   else:
     block_ip_address(ip)
-    if tail_mode:
-      reload_ufw()
+    if tail_mode: reload_ufw()
 
-def handle_invalid_try(line, match, tail_mode):
-  conn_info = get_connection_details(line, match)
-  print(f"{Base.BOLD + conn_info['ip_addr'] + Base.NC} tried to connect as {Base.BOLD + conn_info['usr'] + Base.NC} at {conn_info['date']} {conn_info['time']}")
-  check_blocklist(conn_info['ip_addr'], tail_mode)
+def print_entry(ip, usr, date, time, msg):
+  print(f"{Base.BOLD + ip + Base.NC + ' ' +  msg + ' ' + Base.BOLD + usr + Base.NC} at {date + ' ' + time}")
 
-def handle_accepted_login(line, match, tail_mode):
+def handle_new_entry(line, match, entry_type, tail_mode):
   conn_info = get_connection_details(line, match)
   ip = conn_info['ip_addr']
-  if not terminator.check_trusted(ip) and terminator.kill_if_connected(ip):
-    check_blocklist(ip, tail_mode)
+  usr = conn_info['usr']
+  date = conn_info['date']
+  time = conn_info['time']
+
+  print('\n\n')
+  if entry_type == 0:
+    print_entry(ip, usr, date, time, 'tried to connect as')
+    check_blocklist(conn_info['ip_addr'], tail_mode)
+  elif entry_type == 1:
+    print_entry(ip, usr, date, time, 'sucessfully connected as')
+    if not terminator.check_trusted(ip) and terminator.kill_if_connected(ip):
+      check_blocklist(ip, tail_mode)
+  elif entry_type == 2:
+    print_entry(ip, usr, date, time, 'failed password for')
+    if not terminator.check_trusted(ip):
+      check_blocklist(ip, tail_mode)
 
 # check line for matching information
 def process_line(line, tail_mode):
-  invalid_usr = re.search('(?<=\sfor\sinvalid\suser\s)\w+', line)
-  valid_usr = re.search('(?<=Accepted\spassword\sfor\s)\w+', line)
-
-  if invalid_usr is not None or valid_usr is not None:
-    print("\n\n")
-    if tail_mode:
-      print(f'{Base.WARNING}New connection{Base.NC}')
-
-  if invalid_usr is not None:
-    handle_invalid_try(line, invalid_usr, tail_mode)
-  elif valid_usr is not None:
-    handle_accepted_login(line, valid_usr, tail_mode)
+  searches = [re.search('(?<=\sfor\sinvalid\suser\s)\w+', line), re.search('(?<=Accepted\spassword\sfor\s)\w+', line), re.search('(?<=Failed\spassword\sfor\s)\w+', line)]
+  index = [i for i,v in enumerate(searches) if v != None]
+  if len(index) > 0: handle_new_entry(line, searches[index[0]], index[0], tail_mode)
