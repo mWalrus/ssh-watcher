@@ -6,3 +6,6 @@ blocklist.list
 
 # config files
 *.conf
+
+# pycache
+__pycache__/
